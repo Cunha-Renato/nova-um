@@ -9,7 +9,9 @@
  */
 
 import type * as api_api from "../api/api.js";
-import type * as test_mutation from "../test/mutation.js";
+import type * as tables_customer from "../tables/customer.js";
+import type * as tables_event_dates from "../tables/event_dates.js";
+import type * as tables_tags from "../tables/tags.js";
 
 import type {
   ApiFromModules,
@@ -19,7 +21,9 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "api/api": typeof api_api;
-  "test/mutation": typeof test_mutation;
+  "tables/customer": typeof tables_customer;
+  "tables/event_dates": typeof tables_event_dates;
+  "tables/tags": typeof tables_tags;
 }>;
 
 /**
