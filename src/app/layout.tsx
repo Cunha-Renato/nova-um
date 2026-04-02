@@ -31,7 +31,8 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ConvexClerkProvider>
-          <Auth>{children}
+          <Auth>
+            {children}
           </Auth>
         </ConvexClerkProvider>
       </body>
