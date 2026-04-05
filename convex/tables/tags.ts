@@ -1,4 +1,4 @@
-import { getUserId } from "../api/api";
+import { getUserId } from "../utils/utils";
 import {
   query,
   mutation,
@@ -6,39 +6,38 @@ import {
   type MutationCtx,
 } from "../_generated/server";
 import { v } from "convex/values";
+import { removeTagAllCustomersFn } from "./customer";
 
 // Helper.
-async function getTagUserAndName(
-  ctx: QueryCtx | MutationCtx,
-  user_id: string,
-  name: string,
-) {
-  return await ctx.db
+async function getTagUserAndName(ctx: QueryCtx | MutationCtx, name: string) {
+  const user_id = await getUserId(ctx);
+
+  return user_id !== null ? await ctx.db
     .query("tags")
     .withIndex("by_user_and_name", (q) =>
       q.eq("user_id", user_id).eq("name", name),
     )
-    .unique();
+    .unique()
+    : null;
 }
 
 export const listTags = query({
   handler: async (ctx) => {
-    const user_id = await getUserId(ctx.auth);
+    const user_id = await getUserId(ctx);
 
-    return await ctx.db
+    return user_id !== null ? await ctx.db
       .query("tags")
       .withIndex("by_user", (q) => q.eq("user_id", user_id))
-      .collect();
+      .collect()
+      : null;
   },
 });
 
 export const getTagByName = query({
   args: { name: v.string() },
   handler: async (ctx, args) => {
-    const user_id = await getUserId(ctx.auth);
-
-    await getTagUserAndName(ctx, user_id, args.name);
-  },
+    return await getTagUserAndName(ctx, args.name);
+  }
 });
 
 export const addTag = mutation({
@@ -46,17 +45,13 @@ export const addTag = mutation({
     name: v.string(),
   },
   handler: async (ctx, args) => {
-    const user_id = await getUserId(ctx.auth);
-    const existing = await getTagUserAndName(ctx, user_id, args.name);
+    const user_id = await getUserId(ctx);
+    if (user_id === null) return null;
 
-    if (existing) {
-      throw new Error("Tag with this name already exists");
-    }
+    const existing = await getTagUserAndName(ctx, args.name);
+    if (existing !== null) return null; // already exists
 
-    ctx.db.insert("tags", {
-      user_id,
-      name: args.name,
-    });
+    return await ctx.db.insert("tags", { user_id, name: args.name });
   },
 });
 
@@ -65,14 +60,20 @@ export const removeTag = mutation({
     tag_id: v.id("tags"),
   },
   handler: async (ctx, args) => {
-    const user_id = await getUserId(ctx.auth);
-
     const tag = await ctx.db.get(args.tag_id);
-    if (!tag || tag.user_id !== user_id) {
-      throw new Error("Tag not found");
+    if (tag == null) return null;
+
+    const user_id = await getUserId(ctx);
+    if (user_id === null) return null;
+
+    if (tag.user_id === user_id) {
+      // Remove the Tag from all the customers.
+      await removeTagAllCustomersFn(ctx, args.tag_id);
+ 
+      return await ctx.db.delete(args.tag_id);
     }
 
-    await ctx.db.delete(args.tag_id);
+    return null;
   },
 });
 
@@ -82,16 +83,25 @@ export const updateTag = mutation({
     name: v.string(),
   },
   handler: async (ctx, args) => {
-    const user_id = await getUserId(ctx.auth);
-
     const tag = await ctx.db.get(args.tag_id);
+    if (tag == null) return null;
 
-    if (!tag || tag.user_id !== user_id) {
-      throw new Error("Tag not found");
+    const user_id = await getUserId(ctx);
+    if (user_id === null) return null;
+
+    if (tag.user_id !== user_id) {
+      return null;
     }
 
-    await ctx.db.patch(args.tag_id, {
-      name: args.name,
-    });
+    const existing = await ctx.db
+        .query("tags")
+        .withIndex("by_user_and_name", (q) =>
+          q.eq("user_id", user_id).eq("name", args.name),
+        )
+        .unique();
+
+    if (existing !== null) return null;
+
+    return await ctx.db.patch(args.tag_id, { name: args.name });
   },
 });

@@ -26,6 +26,9 @@ importers:
       react-dom:
         specifier: 19.2.4
         version: 19.2.4(react@19.2.4)
+      result_option:
+        specifier: ^0.1.8
+        version: 0.1.8
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4
@@ -1130,6 +1133,9 @@ packages:
     resolution: {integrity: sha512-reSjH4HuiFlxlaBaFCiS6O76ZGG2ygKoSlCsipKdaZuKSPx/+bt9mULkn4l0asVzbEfQQmXRg6Wp6gv6m0wElw==}
     engines: {node: '>=0.10.0'}
 
+  result_option@0.1.8:
+    resolution: {integrity: sha512-z/J329HF6ydQokWJTBPO7cMjcB8M7ApVkRrBbN7LYi5IaW8iOKP5iwbBnmQoIMPU5kgF45kWiIjAE2SKuB+fhQ==}
+
   rimraf@2.7.1:
     resolution: {integrity: sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==}
     deprecated: Rimraf versions prior to v4 are no longer supported
@@ -1228,6 +1234,11 @@ packages:
 
   typescript@5.9.3:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  typescript@6.0.2:
+    resolution: {integrity: sha512-bGdAIrZ0wiGDo5l8c++HWtbaNCWTS4UTv7RaTH/ThVIgjkveJt83m74bBHMJkuCbslY8ixgLBVZJIOiQlQTjfQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -2144,6 +2155,10 @@ snapshots:
       exit-hook: 1.1.1
       onetime: 1.1.0
 
+  result_option@0.1.8:
+    dependencies:
+      typescript: 6.0.2
+
   rimraf@2.7.1:
     dependencies:
       glob: 7.2.3
@@ -2256,6 +2271,8 @@ snapshots:
   tweetnacl@0.14.5: {}
 
   typescript@5.9.3: {}
+
+  typescript@6.0.2: {}
 
   undici-types@6.21.0: {}
 
