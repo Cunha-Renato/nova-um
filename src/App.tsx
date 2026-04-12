@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { Id } from "../../convex/_generated/dataModel";
+import { api } from "../convex/_generated/api";
+import type { Id } from "../convex/_generated/dataModel";
 
 function Badge({ label, onRemove }: { label: string; onRemove: () => void }) {
   return (
     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-700 text-xs font-medium">
       {label}
-      <button onClick={onRemove} className="hover:text-red-500 transition-colors">
+      <button type="button" onClick={onRemove} className="hover:text-red-500 transition-colors">
         ✕
       </button>
     </span>
@@ -67,6 +67,7 @@ function CustomerCard({
           )}
         </div>
         <button
+          type="button"
           onClick={() => removeCustomer({ customer_id: customer._id })}
           className="text-zinc-300 hover:text-red-400 transition-colors text-sm leading-none"
         >
@@ -185,6 +186,7 @@ function AddCustomerForm({ onAdd }: { onAdd: (data: any) => void }) {
           onChange={(e) => setObservations(e.target.value)}
         />
         <button
+          type="button"
           onClick={handleAdd}
           className="px-4 py-2 text-sm bg-zinc-900 text-white rounded-lg hover:bg-zinc-700 transition-colors"
         >
@@ -233,6 +235,7 @@ function AddRow({
         />
       )}
       <button
+        type="button"
         onClick={handleAdd}
         className="px-4 py-2 text-sm bg-zinc-900 text-white rounded-lg hover:bg-zinc-700 transition-colors"
       >
@@ -299,6 +302,7 @@ export default function DashboardPage() {
                       {new Date(ev.date).toLocaleDateString()}
                     </span>
                     <button
+                      type="button"
                       onClick={() => removeEventDate({ event_id: ev._id })}
                       className="text-zinc-300 hover:text-red-400 transition-colors"
                     >
