@@ -1,6 +1,16 @@
 import { v } from "convex/values";
-import { mutation, MutationCtx, query, QueryCtx } from "../_generated/server";
-import { getUserId } from "../utils/utils";
+import {
+  mutation,
+  type MutationCtx,
+  query,
+  type QueryCtx,
+} from "../_generated/server";
+import {
+  DEFAULT_COLOR,
+  getUserId,
+  sanitizeColor,
+  sanitizeDate,
+} from "../utils/utils";
 import { removeEventDateAllCustomersFn } from "./customer";
 
 // Helper.
@@ -10,10 +20,13 @@ async function getEventDateUserAndName(
 ) {
   const user_id = await getUserId(ctx);
 
-  return user_id !== null ? await ctx.db
-    .query("event_dates")
-    .withIndex("by_user_and_name", (q) => q.eq("user_id", user_id).eq("name", name))
-    .unique()
+  return user_id !== null
+    ? await ctx.db
+        .query("event_dates")
+        .withIndex("by_user_and_name", (q) =>
+          q.eq("user_id", user_id).eq("name", name),
+        )
+        .unique()
     : null;
 }
 
@@ -21,10 +34,11 @@ export const listEventDate = query({
   handler: async (ctx) => {
     const user_id = await getUserId(ctx);
 
-    return user_id !== null ? await ctx.db
-      .query("event_dates")
-      .withIndex("by_user", (q) => q.eq("user_id", user_id))
-      .collect()
+    return user_id !== null
+      ? await ctx.db
+          .query("event_dates")
+          .withIndex("by_user", (q) => q.eq("user_id", user_id))
+          .collect()
       : null;
   },
 });
@@ -40,6 +54,7 @@ export const addEventDate = mutation({
   args: {
     name: v.string(),
     date: v.number(),
+    color: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const user_id = await getUserId(ctx);
@@ -48,7 +63,15 @@ export const addEventDate = mutation({
     const existing = await getEventDateUserAndName(ctx, args.name);
     if (existing !== null) return null; // already exists
 
-    return await ctx.db.insert("event_dates", { user_id, name: args.name, date: args.date });
+    const color =
+      args.color !== undefined ? sanitizeColor(args.color) : DEFAULT_COLOR;
+
+    return await ctx.db.insert("event_dates", {
+      user_id,
+      name: args.name,
+      date: args.date,
+      color,
+    });
   },
 });
 
@@ -68,7 +91,7 @@ export const removeEventDate = mutation({
 
       return await ctx.db.delete(args.event_id);
     }
-    
+
     return null;
   },
 });
@@ -78,6 +101,7 @@ export const updateEventDate = mutation({
     event_id: v.id("event_dates"),
     name: v.string(),
     date: v.number(),
+    color: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const event_date = await ctx.db.get(args.event_id);
@@ -91,14 +115,21 @@ export const updateEventDate = mutation({
     }
 
     const existing = await ctx.db
-        .query("event_dates")
-        .withIndex("by_user_and_name", (q) =>
-          q.eq("user_id", user_id).eq("name", args.name),
-        )
-        .unique();
+      .query("event_dates")
+      .withIndex("by_user_and_name", (q) =>
+        q.eq("user_id", user_id).eq("name", args.name),
+      )
+      .unique();
 
-    if (existing !== null) return null;
+    if (existing !== null || !sanitizeDate(args.date)) return null;
 
-    return await ctx.db.patch(args.event_id, { name: args.name, date: args.date });
+    const color =
+      args.color !== undefined ? sanitizeColor(args.color) : event_date.color;
+
+    return await ctx.db.patch(args.event_id, {
+      name: args.name,
+      date: args.date,
+      color,
+    });
   },
 });

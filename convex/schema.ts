@@ -11,7 +11,7 @@ export default defineSchema({
 
   customer_tags: defineTable({
     customer_id: v.id("customers"),
-    tag_id: v.id("tags")
+    tag_id: v.id("tags"),
   })
     .index("by_customer", ["customer_id"])
     .index("by_tag", ["tag_id"]),
@@ -26,6 +26,7 @@ export default defineSchema({
   tags: defineTable({
     user_id: v.string(),
     name: v.string(),
+    color: v.number(),
   })
     .index("by_user", ["user_id"])
     .index("by_user_and_name", ["user_id", "name"]),
@@ -34,6 +35,7 @@ export default defineSchema({
     user_id: v.string(),
     name: v.string(),
     date: v.number(),
+    color: v.number(),
   })
     .index("by_user", ["user_id"])
     .index("by_user_and_name", ["user_id", "name"]),
