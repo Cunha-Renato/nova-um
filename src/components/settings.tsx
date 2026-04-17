@@ -1,0 +1,68 @@
+/** biome-ignore-all lint/performance/noImgElement: <Not using NextJs> */
+import { useClerk, useUser } from '@clerk/react'
+import { useState } from 'react'
+
+export function SettingsPopup({ dark, toggle }: { dark: boolean, toggle: () => void }) {
+  const [open, setOpen] = useState(false)
+  const { user } = useUser()
+  const { signOut, openUserProfile } = useClerk()
+
+  const initials = `${user?.firstName?.[0] ?? ''}${user?.lastName?.[0] ?? ''}`
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-800"
+      >
+        <div className="h-8 w-8 rounded-full overflow-hidden shrink-0">
+          {user?.imageUrl
+            ? <img src={user.imageUrl} alt={user.fullName ?? ''} className="h-full w-full object-cover" />
+            : <span className="flex h-full w-full items-center justify-center bg-blue-100 dark:bg-blue-900 text-sm font-medium text-blue-700 dark:text-blue-300">{initials}</span>
+          }
+        </div>
+        <div className="min-w-0 text-left">
+          <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{user?.fullName}</p>
+          <p className="text-xs text-gray-500 truncate">{user?.primaryEmailAddress?.emailAddress}</p>
+        </div>
+      </button>
+
+      {open && (
+        <>
+          <button type="button" className="fixed inset-0 z-10" onClick={() => setOpen(false)} aria-label="Close" tabIndex={0} onKeyDown={e => e.key === 'Escape' && setOpen(false)} />
+          <div className="absolute bottom-11 left-0 z-20 overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900" style={{ width: 272 }}>
+            <div className="p-2">
+              <div className="flex items-center justify-between px-2.5 py-2 rounded-md">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Dark mode</span>
+                <button type="button" onClick={toggle} className={`relative w-9 h-5 rounded-full transition-colors ${dark ? 'bg-indigo-500' : 'bg-gray-300'}`}>
+                  <span className={`absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-white transition-transform ${dark ? 'translate-x-4' : ''}`} />
+                </button>
+              </div>
+
+              <div className="my-1 h-px bg-gray-100 dark:bg-gray-800" />
+
+              <button
+                type="button"
+                onClick={() => { openUserProfile(); setOpen(false) }}
+                className="flex w-full items-center gap-2.5 px-2.5 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                Manage account
+              </button>
+
+              <div className="my-1 h-px bg-gray-100 dark:bg-gray-800" />
+
+              <button
+                type="button"
+                onClick={() => signOut()}
+                className="flex w-full items-center gap-2.5 px-2.5 py-2 text-sm font-medium text-red-600 rounded-md hover:bg-red-50 dark:hover:bg-red-950"
+              >
+                Sign out
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}

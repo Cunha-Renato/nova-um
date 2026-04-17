@@ -45,6 +45,7 @@ export const getTagByName = query({
 export const addTag = mutation({
   args: {
     name: v.string(),
+    return_after: v.optional(v.number()),
     color: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
@@ -57,7 +58,12 @@ export const addTag = mutation({
     const color =
       args.color !== undefined ? sanitizeColor(args.color) : DEFAULT_COLOR;
 
-    return await ctx.db.insert("tags", { user_id, name: args.name, color });
+    return await ctx.db.insert("tags", {
+      user_id,
+      name: args.name,
+      return_after: args.return_after,
+      color,
+    });
   },
 });
 
@@ -87,6 +93,7 @@ export const updateTag = mutation({
   args: {
     tag_id: v.id("tags"),
     name: v.string(),
+    return_after: v.optional(v.number()),
     color: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
@@ -112,6 +119,10 @@ export const updateTag = mutation({
     const color =
       args.color !== undefined ? sanitizeColor(args.color) : tag.color;
 
-    return await ctx.db.patch(args.tag_id, { name: args.name, color });
+    return await ctx.db.patch(args.tag_id, {
+      name: args.name,
+      return_after: args.return_after,
+      color,
+    });
   },
 });
