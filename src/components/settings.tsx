@@ -23,7 +23,7 @@ export function SettingsPopup({ dark, toggle }: { dark: boolean, toggle: () => v
       {open && (
         <>
           <button type="button" className="fixed inset-0 z-10" onClick={() => setOpen(false)} aria-label="Close" tabIndex={0} onKeyDown={e => e.key === 'Escape' && setOpen(false)} />
-          <div className="absolute bottom-11 left-0 z-20 overflow-hidden rounded-xl border border-gray-200 bg-dark-background" style={{ width: 272 }}>
+          <div className="absolute bottom-11 left-0 z-20 overflow-hidden rounded-xl border border-gray-200 bg-background-active-sidebar" style={{ width: 272 }}>
 
             {/* User info */}
             <div className="flex items-center gap-3 p-4 border-b border-gray-200">
