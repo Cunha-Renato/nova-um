@@ -1,1 +1,33 @@
 @import "tailwindcss";
+
+@theme {
+    --color-background: var(--background);
+    --color-dark-background: var(--dark-background);
+    --color-foreground: var(--foreground);
+
+    /* Sidebar */
+    --color-background-hover-sidebar: var(--background-hover-sidebar);
+    --color-background-active-sidebar: var(--background-active-sidebar);
+    --color-background-inactive-sidebar: var(--background-inactive-sidebar);
+    --color-foreground-active-sidebar: var(--foreground-active-sidebar);
+    --color-foreground-inactive-sidebar: var(--foreground-inactive-sidebar);
+}
+
+:root {
+    /* Default */
+    --background: white;
+    --dark-background: #e5e5e5;
+    --foreground: #101828;
+
+    /* Sidebar */
+    --background-hover-sidebar: #f9fafb;
+    --background-active-sidebar: #f3f4f6;
+    --background-inactive-sidebar: white;
+    --foreground-active-sidebar: #101828;
+    --foreground-inactive-sidebar: #4a5565;
+}
+
+[data-theme="dark"] {
+    --background: black;
+    --foreground: white;
+}
