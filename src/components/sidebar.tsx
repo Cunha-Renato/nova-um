@@ -1,13 +1,14 @@
-import { ChevronLeft, Moon, Sun } from "lucide-react";
+import { ChevronLeft, Settings } from "lucide-react";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "../lib/routes";
-import { UserButton } from "@clerk/react";
 import { SettingsPopup } from "./settings";
 
 export function Sidebar() {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
+  const [settings_state, setSettingsState] = useState(false);
+
   // Theme
   const [dark, setDark] = useState(
     () => localStorage.getItem('theme') === 'dark'
@@ -32,7 +33,7 @@ export function Sidebar() {
         </button>
       </div>
 
-      <nav className="flex-1 space-y-1 p-2">
+      <nav className="flex flex-col h-full space-y-1 p-2">
         {ROUTES.map(({ icon: Icon, label, href }) => (
           <button
             type="button"
@@ -46,9 +47,21 @@ export function Sidebar() {
             {!collapsed && <span>{label}</span>}
           </button>
         ))}
+        <button
+          type="button"
+          className={`mt-auto flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-foreground-inactive-sidebar hover:bg-background-hover-sidebar hover:text-foreground-active-sidebar`}
+          onClick={() => setSettingsState((o) => !o)}
+        >
+          <Settings className="h-5 w-5 shrink-0" />
+          {!collapsed && <span>Settings</span>}
+        </button>
       </nav>
 
-      <SettingsPopup dark={dark} toggle={toggle} />
+      {settings_state && <SettingsPopup
+        dark={dark}
+        toggle={toggle}
+        onClose={() => setSettingsState(false)}
+      />}
     </aside>
   )
 }
