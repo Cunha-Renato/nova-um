@@ -9,9 +9,9 @@
  */
 
 import type * as tables_customer from "../tables/customer.js";
-import type * as tables_event_dates from "../tables/event_dates.js";
 import type * as tables_tags from "../tables/tags.js";
 import type * as utils_utils from "../utils/utils.js";
+import type * as validator from "../validator.js";
 
 import type {
   ApiFromModules,
@@ -21,9 +21,9 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "tables/customer": typeof tables_customer;
-  "tables/event_dates": typeof tables_event_dates;
   "tables/tags": typeof tables_tags;
   "utils/utils": typeof utils_utils;
+  validator: typeof validator;
 }>;
 
 /**

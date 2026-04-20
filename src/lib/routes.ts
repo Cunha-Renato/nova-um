@@ -1,6 +1,6 @@
 import { Home, Settings, Users, BarChart3 } from "lucide-react";
 import Customers from "../components/routes/Customers";
-import App from "../components/routes/App";
+import App from "../components/routes/Dashboard";
 
 export const ROUTES = [
   { icon: Home, label: "Dashboard", href: "/", page: App },

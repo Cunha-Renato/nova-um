@@ -45,7 +45,6 @@ export const getTagByName = query({
 export const addTag = mutation({
   args: {
     name: v.string(),
-    return_after: v.optional(v.number()),
     color: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
@@ -61,7 +60,6 @@ export const addTag = mutation({
     return await ctx.db.insert("tags", {
       user_id,
       name: args.name,
-      return_after: args.return_after,
       color,
     });
   },
@@ -121,7 +119,6 @@ export const updateTag = mutation({
 
     return await ctx.db.patch(args.tag_id, {
       name: args.name,
-      return_after: args.return_after,
       color,
     });
   },

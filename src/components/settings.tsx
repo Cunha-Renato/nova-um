@@ -10,7 +10,7 @@ export function SettingsPopup({ dark, toggle, onClose }: { dark: boolean, toggle
   return (
     <>
       <button type="button" className="fixed inset-0 z-10" aria-label="Close" tabIndex={0} onClick={onClose} />
-      <div className="absolute bottom-11 left-0 z-20 overflow-hidden rounded-xl border border-gray-200 bg-background-active-sidebar" style={{ width: 272 }}>
+      <div className="absolute bottom-11 left-0 z-20 overflow-hidden rounded-xl border border-gray-200 bg-background" style={{ width: 272, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
 
         {/* User info */}
         <div className="flex items-center gap-3 p-4 border-b border-gray-200">
@@ -29,7 +29,7 @@ export function SettingsPopup({ dark, toggle, onClose }: { dark: boolean, toggle
         <div className="p-2">
           <div className="flex items-center justify-between px-2.5 py-2 rounded-md">
             <span className="text-sm font-medium text-gray-700">Dark mode</span>
-            <button type="button" onClick={toggle} className={`relative w-9 h-5 rounded-full transition-colors ${dark ? 'bg-indigo-500' : 'bg-gray-300'}`}>
+            <button type="button" onClick={toggle} className={`relative w-9 h-5 rounded-full transition-colors ${dark ? 'bg-gray-700' : 'bg-gray-300'}`}>
               <span className={`absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-white transition-transform ${dark ? 'translate-x-4' : ''}`} />
             </button>
           </div>
@@ -39,7 +39,7 @@ export function SettingsPopup({ dark, toggle, onClose }: { dark: boolean, toggle
           <button
             type="button"
             onClick={() => { openUserProfile(); }}
-            className="flex w-full items-center gap-2.5 px-2.5 py-2 text-sm font-medium text-gray-700  rounded-md hover:bg-gray-100"
+            className="flex w-full items-center gap-2.5 px-2.5 py-2 text-sm font-medium text-gray-700  rounded-md hover:bg-background-hover-sidebar"
           >
             Manage account
           </button>
