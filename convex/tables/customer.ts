@@ -136,7 +136,7 @@ export const addTagCustomer = mutation({
         : undefined;
 
     if (
-      args !== undefined &&
+      args.reminder !== undefined &&
       args.reminder.type.type === "once" &&
       !sanitizeDate(args.reminder.type.date)
     ) {

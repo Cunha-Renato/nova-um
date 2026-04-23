@@ -21,8 +21,8 @@ export function Sidebar() {
   }
 
   return (
-    <aside className={`flex h-screen flex-col border-r border-gray-200 bg-background transition-all duration-100 ${collapsed ? "w-15" : "w-50"}`}>
-      <div className={`flex h-14 items-center border-b border-gray-200 px-3 ${collapsed ? "justify-center" : "justify-between"}`}>
+    <aside className={`flex h-screen flex-col border-r border-border bg-background transition-all duration-100 ${collapsed ? "w-15" : "w-50"}`}>
+      <div className={`flex h-14 items-center border-b border-border px-3 ${collapsed ? "justify-center" : "justify-between"}`}>
         {!collapsed && <span className="font-semibold text-foreground">NovaUm</span>}
         <button
           type="button"

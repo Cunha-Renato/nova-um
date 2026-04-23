@@ -4,6 +4,7 @@
     --color-background: var(--background);
     --color-dark-background: var(--dark-background);
     --color-foreground: var(--foreground);
+    --color-border: var(--border);
 
     /* Sidebar */
     --color-background-hover-sidebar: var(--background-hover-sidebar);
@@ -18,6 +19,7 @@
     --background: white;
     --dark-background: #e5e5e5;
     --foreground: #101828;
+    --border: #e5e7eb;
 
     /* Sidebar */
     --background-hover-sidebar: #f9fafb;

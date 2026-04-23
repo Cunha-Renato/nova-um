@@ -10,10 +10,10 @@ export function SettingsPopup({ dark, toggle, onClose }: { dark: boolean, toggle
   return (
     <>
       <button type="button" className="fixed inset-0 z-10" aria-label="Close" tabIndex={0} onClick={onClose} />
-      <div className="absolute bottom-11 left-0 z-20 overflow-hidden rounded-xl border border-gray-200 bg-background" style={{ width: 272, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+      <div className="absolute bottom-11 left-0 z-20 overflow-hidden rounded-xl border border-border bg-background" style={{ width: 272, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
 
         {/* User info */}
-        <div className="flex items-center gap-3 p-4 border-b border-gray-200">
+        <div className="flex items-center gap-3 p-4 border-b border-border">
           <div className="h-11 w-11 rounded-full overflow-hidden shrink-0">
             {user?.imageUrl
               ? <img src={user.imageUrl} alt={user.fullName ?? ''} className="h-full w-full object-cover" />
@@ -21,30 +21,30 @@ export function SettingsPopup({ dark, toggle, onClose }: { dark: boolean, toggle
             }
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-medium text-gray-900 truncate">{user?.fullName}</p>
-            <p className="text-xs text-gray-500 truncate">{user?.primaryEmailAddress?.emailAddress}</p>
+            <p className="text-sm font-medium text-foreground truncate">{user?.fullName}</p>
+            <p className="text-xs text-foreground-inactive-sidebar truncate">{user?.primaryEmailAddress?.emailAddress}</p>
           </div>
         </div>
 
         <div className="p-2">
           <div className="flex items-center justify-between px-2.5 py-2 rounded-md">
-            <span className="text-sm font-medium text-gray-700">Dark mode</span>
+            <span className="text-sm font-medium text-foreground">Dark mode</span>
             <button type="button" onClick={toggle} className={`relative w-9 h-5 rounded-full transition-colors ${dark ? 'bg-gray-700' : 'bg-gray-300'}`}>
               <span className={`absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-white transition-transform ${dark ? 'translate-x-4' : ''}`} />
             </button>
           </div>
 
-          <div className="my-1 h-px bg-gray-100" />
+          <div className="my-1 h-px bg-border" />
 
           <button
             type="button"
             onClick={() => { openUserProfile(); }}
-            className="flex w-full items-center gap-2.5 px-2.5 py-2 text-sm font-medium text-gray-700  rounded-md hover:bg-background-hover-sidebar"
+            className="flex w-full items-center gap-2.5 px-2.5 py-2 text-sm font-medium text-foreground  rounded-md hover:bg-background-hover-sidebar"
           >
             Manage account
           </button>
 
-          <div className="my-1 h-px bg-gray-100" />
+          <div className="my-1 h-px bg-border" />
 
           <button
             type="button"
